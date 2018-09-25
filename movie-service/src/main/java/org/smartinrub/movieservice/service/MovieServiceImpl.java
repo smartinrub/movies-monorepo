@@ -55,7 +55,6 @@ public class MovieServiceImpl implements MovieService {
     @Cacheable(cacheNames = "movieById")
     @Override
     public Optional<Movie> getMovieById(Long id) {
-        System.out.println("get movie");
         String url = BASE_URL + "movie/" + id + "?api_key=" + THEMOVIEDB_API_KEY;
         try {
             return Optional.ofNullable(restTemplate.getForEntity(url, Movie.class).getBody());
