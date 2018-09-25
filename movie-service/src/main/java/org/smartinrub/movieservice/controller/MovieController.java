@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -21,8 +23,8 @@ public class MovieController {
     }
 
     @GetMapping("/movies/{title}")
-    public ResponseEntity<List<Movie>> getMoviesByTitle(@PathVariable("title") String title) {
-        Optional<List<Movie>> movies = movieService.getMoviesByTitle(title);
+    public ResponseEntity<String> getMoviesByTitle(@PathVariable("title") String title) throws IOException {
+        Optional<String> movies = movieService.getMoviesByTitle(title);
         if (!movies.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
