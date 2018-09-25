@@ -23,8 +23,8 @@ public class MovieController {
     }
 
     @GetMapping("/movies/{title}")
-    public ResponseEntity<String> getMoviesByTitle(@PathVariable("title") String title) throws IOException {
-        Optional<String> movies = movieService.getMoviesByTitle(title);
+    public ResponseEntity<List<Movie>> getMoviesByTitle(@PathVariable("title") String title) throws IOException {
+        Optional<List<Movie>> movies = movieService.getMoviesByTitle(title);
         if (!movies.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
