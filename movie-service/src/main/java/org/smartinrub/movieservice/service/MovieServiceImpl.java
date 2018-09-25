@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.smartinrub.movieservice.model.Movie;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -22,7 +23,11 @@ public class MovieServiceImpl implements MovieService {
 
     private static final String THEMOVIEDB_API_KEY = System.getenv("THEMOVIEDB_API_KEY");
 
-    private RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+
+    public MovieServiceImpl(RestTemplateBuilder restTemplateBuilder) {
+        restTemplate = restTemplateBuilder.build();
+    }
 
     @Cacheable(cacheNames = "moviesByTitle")
     @Override
