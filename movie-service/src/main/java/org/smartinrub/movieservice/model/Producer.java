@@ -2,9 +2,12 @@ package org.smartinrub.movieservice.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.Value;
 
-@Data
-public class Producer {
+import java.io.Serializable;
+
+@Value
+class Producer implements Serializable {
 
     private final String id;
 
