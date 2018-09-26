@@ -155,7 +155,9 @@ class MovieServiceImplTest {
         Map<String, String> map = new HashMap<>();
         List<Map<String, String>> genres = new ArrayList<>();
         genres.add(map);
+        Producer producer = new Producer("1", "logo", "producer", "uk");
         List<Producer> producers = new ArrayList<>();
+        producers.add(producer);
 
         String expectedMovie =
                 objectMapper.writeValueAsString(new Movie(
