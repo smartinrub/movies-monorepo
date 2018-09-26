@@ -1,9 +1,7 @@
 package org.smartinrub.movieservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.smartinrub.movieservice.model.Movie;
 import org.smartinrub.movieservice.model.Producer;
@@ -15,11 +13,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.io.IOException;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withNoContent;
@@ -39,8 +39,119 @@ class MovieServiceImplTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @DisplayName("getMovieById given movieId when remote client returns movie then returns movie")
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("getMoviesByTitle given movie title when remote client returns array of movies then returns movies")
+    class getMoviesByTitle_givenMovieTitle_whenRemoteClientReturnsArrayOfMovies_thenReturnsMovies {
+
+        String expectedMovies;
+
+        List<Movie> movies;
+
+        @BeforeAll
+        void initAll() throws IOException {
+            expectedMovies = "{\"results\":" +
+                    "[{\"id\": \"226979\",\"title\": \"Test\",\"poster_path\": \"/mMohokylrZ2AsFPgqdrgI8o7i9i.jpg\",\"release_date\": \"2013-06-29\"}," +
+                    "{\"id\": \"401123\",\"title\": \"Beta Test\",\"poster_path\": \"/9lvcWpo7na9nxW3FMyIQoc2tmdQ.jpg\",\"release_date\": \"2016-07-22\"}," +
+                    "{\"id\": \"427557\",\"title\": \"Attitude Test\",\"poster_path\": \"/eaiGbe9dYYwXPbGAfsChKCd5rsa.jpg\",\"release_date\": \"2016-12-01\"}]}";
+
+            server.expect(requestTo("https://api.themoviedb.org/3/search/movie?api_key=28a5b67e6420000653b42520a245e476&query=test"))
+                    .andRespond(withSuccess(expectedMovies, MediaType.APPLICATION_JSON));
+            movies = movieService.getMoviesByTitle("test").get();
+        }
+
+        @Nested
+        class ListOfMoviesIsNotNullOrEmpty {
+
+            @Test
+            void listIsNotNull() {
+                assertThat(movies).isNotNull();
+            }
+
+            @Test
+            void listIsNotEmpty() {
+                assertThat(movies).isNotEmpty();
+            }
+
+            @Nested
+            class ListContainsMovies {
+
+                @Test
+                void listContainsThreeMovies () {
+                    assertThat(movies.size()).isEqualTo(3);
+                }
+
+                @Test
+                void firstMovieIsCorrect() {
+                    assertAll("movie",
+                            () -> assertThat(movies.get(0).getId()).isEqualTo("226979"),
+                            () -> assertThat(movies.get(0).getTitle()).isEqualTo("Test"),
+                            () -> assertThat(movies.get(0).getCover()).isEqualTo("/mMohokylrZ2AsFPgqdrgI8o7i9i.jpg"),
+                            () -> assertThat(movies.get(0).getReleaseDate()).isEqualTo("2013-06-29")
+                    );
+                }
+            }
+
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("getMoviesByTitle given movie title when remote client returns array of movies then returns movies")
+    class getMoviesByTitle_givenMovieTitle_whenRemoteClientReturnsEmptyArray_thenReturnsEmptyArray {
+
+        String expectedMovies;
+
+        List<Movie> movies;
+
+        @BeforeAll
+        void initAll() throws IOException {
+            expectedMovies = "{\"results\":[]}";
+
+            server.expect(requestTo("https://api.themoviedb.org/3/search/movie?api_key=28a5b67e6420000653b42520a245e476&query=test123"))
+                    .andRespond(withSuccess(expectedMovies, MediaType.APPLICATION_JSON));
+            movies = movieService.getMoviesByTitle("test123").get();
+        }
+
+        @Nested
+        class ListOfMoviesIsNotNullOrEmpty {
+
+            @Test
+            void listIsNotNull() {
+                assertThat(movies).isNotNull();
+            }
+
+            @Test
+            void listIsEmpty() {
+                assertThat(movies).isEmpty();
+            }
+
+            @Nested
+            class ListContainsNoContainsAnyMovie {
+
+                @Test
+                void listContainsNoMovies () {
+                    assertThat(movies.size()).isEqualTo(0);
+                }
+            }
+
+        }
+    }
+
     @Test
+    @DisplayName("getMoviesByTitle given movie title when remote client returns array of movies then returns movies")
+    void getMoviesByTitle_givenMovieTitle_whenRemoteClientReturnsNotFound_thenReturnsEmptyArray() throws IOException {
+        Optional<List<Movie>> movies;
+        server.expect(requestTo("https://api.themoviedb.org/3/search/movie?api_key=28a5b67e6420000653b42520a245e476&query=test123"))
+                .andRespond(withStatus(HttpStatus.NOT_FOUND));
+        movies = movieService.getMoviesByTitle("test123");
+
+        assertThat(movies).isEmpty();
+    }
+
+    @Test
+    @DisplayName("getMovieById given movieId when remote client returns movie then returns movie")
     void getMovieById_givenMovieId_whenRemoteClientReturnsMovie_thenReturnsMovie() throws Exception {
         Map<String, String> map = new HashMap<>();
         List<Map<String, String>> genres = new ArrayList<>();
@@ -68,9 +179,9 @@ class MovieServiceImplTest {
                 () -> assertThat(movie.getProducers()).isNotNull());
     }
 
-    @DisplayName("getMovieById given movieId when remote client returns null then returns empty")
     @Test
-    void getMoviesByTitle_givenMovieTitle_whenRemoteClientDoesNotReturnMovie_thenReturnsEmpty() {
+    @DisplayName("getMovieById given movieId when remote client returns null then returns empty")
+    void getMoviesByTitle_givenMovieTitle_whenRemoteClientReturnsNotFound_thenReturnsEmpty() {
         server.expect(requestTo("https://api.themoviedb.org/3/movie/9999999?api_key=28a5b67e6420000653b42520a245e476"))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));
 
