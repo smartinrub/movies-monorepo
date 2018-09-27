@@ -6,6 +6,4 @@ import java.util.List;
 public interface YoutubeRepository {
 
     List<String> getYoutubeLinksByMovieTitle(String movieTitle) throws IOException;
-
-
 }

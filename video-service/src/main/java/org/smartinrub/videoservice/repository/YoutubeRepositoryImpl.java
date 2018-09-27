@@ -10,9 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-//https://www.googleapis.com/youtube/v3/search?key=AIzaSyDpeMXlSjxCYr0GWQMg78MsejHanSUUfV4&part=id&q=parkour&maxResults=3&type=video
-
 @Repository
 public class YoutubeRepositoryImpl implements YoutubeRepository {
 
