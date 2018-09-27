@@ -5,8 +5,10 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.smartinrub.movieservice.model.Movie;
 import org.smartinrub.movieservice.model.Producer;
+import org.smartinrub.movieservice.util.TheMovieDb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -34,6 +36,9 @@ class MovieServiceImplTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @MockBean
+    private TheMovieDb theMovieDbProperties;
+
     @AfterEach
     void tearDown() {
         server.reset();
@@ -55,7 +60,7 @@ class MovieServiceImplTest {
                     "{\"id\": \"401123\",\"title\": \"Beta Test\",\"poster_path\": \"/9lvcWpo7na9nxW3FMyIQoc2tmdQ.jpg\",\"release_date\": \"2016-07-22\"}," +
                     "{\"id\": \"427557\",\"title\": \"Attitude Test\",\"poster_path\": \"/eaiGbe9dYYwXPbGAfsChKCd5rsa.jpg\",\"release_date\": \"2016-12-01\"}]}";
 
-            server.expect(requestTo("https://api.themoviedb.org/3/search/movie?api_key=28a5b67e6420000653b42520a245e476&query=test"))
+            server.expect(requestTo("https://api.themoviedb.org/3/search/movie?api_key=null&query=test"))
                     .andRespond(withSuccess(expectedMovies, MediaType.APPLICATION_JSON));
             movies = movieService.getMoviesByTitle("test").get();
         }
@@ -108,7 +113,7 @@ class MovieServiceImplTest {
         void initAll() throws IOException {
             expectedMovies = "{\"results\":[]}";
 
-            server.expect(requestTo("https://api.themoviedb.org/3/search/movie?api_key=28a5b67e6420000653b42520a245e476&query=test123"))
+            server.expect(requestTo("https://api.themoviedb.org/3/search/movie?api_key=null&query=test123"))
                     .andRespond(withSuccess(expectedMovies, MediaType.APPLICATION_JSON));
             movies = movieService.getMoviesByTitle("test123").get();
         }
@@ -142,7 +147,7 @@ class MovieServiceImplTest {
     @DisplayName("getMoviesByTitle given movie title when remote client returns array of movies then returns movies")
     void getMoviesByTitle_givenMovieTitle_whenRemoteClientReturnsNotFound_thenReturnsEmptyArray() throws IOException {
         Optional<List<Movie>> movies;
-        server.expect(requestTo("https://api.themoviedb.org/3/search/movie?api_key=28a5b67e6420000653b42520a245e476&query=test123"))
+        server.expect(requestTo("https://api.themoviedb.org/3/search/movie?api_key=null&query=test123"))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));
         movies = movieService.getMoviesByTitle("test123");
 
@@ -167,7 +172,7 @@ class MovieServiceImplTest {
                         "01/01/1991",
                         genres,
                         producers));
-        server.expect(requestTo("https://api.themoviedb.org/3/movie/1?api_key=28a5b67e6420000653b42520a245e476"))
+        server.expect(requestTo("https://api.themoviedb.org/3/movie/1?api_key=null"))
                 .andRespond(withSuccess(expectedMovie, MediaType.APPLICATION_JSON));
 
         Movie movie = movieService.getMovieById(1L).get();
@@ -183,7 +188,7 @@ class MovieServiceImplTest {
     @Test
     @DisplayName("getMovieById given movieId when remote client returns null then returns empty")
     void getMoviesByTitle_givenMovieTitle_whenRemoteClientReturnsNotFound_thenReturnsEmpty() {
-        server.expect(requestTo("https://api.themoviedb.org/3/movie/9999999?api_key=28a5b67e6420000653b42520a245e476"))
+        server.expect(requestTo("https://api.themoviedb.org/3/movie/9999999?api_key=null"))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));
 
         Optional<Movie> movie = movieService.getMovieById(9999999L);

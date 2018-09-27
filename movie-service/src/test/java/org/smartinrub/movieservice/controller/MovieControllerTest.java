@@ -32,7 +32,7 @@ class MovieControllerTest {
     @Test
     void getMoviesByTitle_givenMovieTitle_whenListOfMoviesIsPresent_thenReturnsMoviesAndOkResponse() throws Exception {
         when(service.getMoviesByTitle("test")).thenReturn(Optional.of(anyList()));
-        mockMvc.perform(get("/movies/test"))
+        mockMvc.perform(get("/test"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[]"));
     }
@@ -40,7 +40,7 @@ class MovieControllerTest {
     @Test
     void getMoviesByTitle_givenMovieTitle_whenMoviesIsNotPresent_thenReturnsNotFoundResponse() throws Exception {
         when(service.getMoviesByTitle("test")).thenReturn(Optional.empty());
-        mockMvc.perform(get("/movies/test"))
+        mockMvc.perform(get("/test"))
                 .andExpect(status().isNotFound());
     }
 
