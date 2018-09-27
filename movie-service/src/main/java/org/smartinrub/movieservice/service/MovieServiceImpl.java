@@ -34,7 +34,7 @@ public class MovieServiceImpl implements MovieService {
     public Optional<List<Movie>> getMoviesByTitle(String title) throws IOException {
         String url = BASE_URL + "search/movie?api_key=" + THEMOVIEDB_API_KEY + "&query=" + title;
         try {
-           String string = restTemplate.getForEntity(url, String.class).getBody();
+           String string = restTemplate.getForObject(url, String.class);
 
            JsonNode arrayNode = new ObjectMapper().readTree(string).get("results");
            List<Movie> movies = new ArrayList<>();
@@ -56,7 +56,7 @@ public class MovieServiceImpl implements MovieService {
     public Optional<Movie> getMovieById(Long id) {
         String url = BASE_URL + "movie/" + id + "?api_key=" + THEMOVIEDB_API_KEY;
         try {
-            return Optional.ofNullable(restTemplate.getForEntity(url, Movie.class).getBody());
+            return Optional.ofNullable(restTemplate.getForObject(url, Movie.class));
         } catch (HttpClientErrorException e) {
             log.error("State {} when {}", e.getMessage(), url);
             return Optional.empty();

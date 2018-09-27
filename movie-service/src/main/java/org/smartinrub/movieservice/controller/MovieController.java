@@ -20,7 +20,7 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-    @GetMapping("/movies/{title}")
+    @GetMapping("/{title}")
     public ResponseEntity<List<Movie>> getMoviesByTitle(@PathVariable("title") String title) throws IOException {
         Optional<List<Movie>> movies = movieService.getMoviesByTitle(title);
         if (!movies.isPresent()) {
