@@ -22,13 +22,22 @@ public class VideoRepositoryImpl implements VideoRepository {
     @Override
     public void saveLinks(String movieId, List<String> links) {
         log.info("Saving links of movie {} in Redis...", movieId);
-        ListOperations<String, String> stringStringListOperations = redisTemplate.opsForList();
-        stringStringListOperations.leftPushAll(movieId, links);
+        try {
+            ListOperations<String, String> stringStringListOperations = redisTemplate.opsForList();
+            stringStringListOperations.leftPushAll(movieId, links);
+        } catch (RuntimeException e) {
+            log.error("Redis server is not responding!");
+        }
     }
 
     @Override
     public boolean isVideoSaved(String movieId) {
-        return redisTemplate.hasKey(movieId);
+        try{
+            return redisTemplate.hasKey(movieId);
+        } catch (RuntimeException e) {
+            log.error("Redis server is not responding!");
+            return false;
+        }
     }
 
     @Override
