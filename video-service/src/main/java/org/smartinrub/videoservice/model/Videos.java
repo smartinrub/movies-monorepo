@@ -2,9 +2,12 @@ package org.smartinrub.videoservice.model;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class Links {
+public class Videos {
 
     private final String movieId;
+    private final List<String> links;
 
 }

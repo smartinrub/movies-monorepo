@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface VideoRepository {
 
-    void saveLinks(List<String> links);
+    void saveLinks(String movieId, List<String> links);
 
     boolean isVideoSaved(String movieId);
 
