@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @ExtendWith(SpringExtension.class)
@@ -82,5 +83,14 @@ class YoutubeRepositoryImplTest {
                 }
             }
         }
+    }
+
+    @Test
+    void getYoutubeLinksByMovieTitle_givenMovieTitle_whenErrorInYoutubeApi_thenReturnEmptyList() throws IOException {
+        server.expect(requestTo("https://www.googleapis.com/youtube/v3/search?key=null&part=id&q=test&maxResults=0&type=video"))
+                .andRespond(withBadRequest());
+        List<String> links = youtubeRepository.getYoutubeLinksByMovieTitle("test");
+
+        assertThat(links).isEmpty();
     }
 }

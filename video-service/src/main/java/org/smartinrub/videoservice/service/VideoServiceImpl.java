@@ -27,7 +27,9 @@ public class VideoServiceImpl implements VideoService {
         }
 
         List<String> links = youtubeRepository.getYoutubeLinksByMovieTitle(movieTitle);
-        videoRepository.saveLinks(movieId, links);
+        if (!links.isEmpty()) {
+            videoRepository.saveLinks(movieId, links);
+        }
         return links;
     }
 }

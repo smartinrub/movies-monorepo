@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.smartinrub.videoservice.util.Youtube;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -33,16 +35,20 @@ public class YoutubeRepositoryImpl implements YoutubeRepository {
                 "&part=id&q=" + movieTitle +
                 "&maxResults="+ youtubeProperties.getMaxResults() +
                 "&type=video";
-        String string = restTemplate.getForObject(url, String.class);
-
-        JsonNode arrayNode = new ObjectMapper().readTree(string).get("items");
-        List<String> links = new ArrayList<>();
-        if (arrayNode.isArray()) {
-            for (final JsonNode node : arrayNode) {
-                JsonNode nodeId = node.path("id").findPath("videoId");
-                links.add(BASE_VIDEO_LINK_URL + nodeId.textValue());
+        try {
+            String string = restTemplate.getForObject(url, String.class);
+            JsonNode arrayNode = new ObjectMapper().readTree(string).get("items");
+            List<String> links = new ArrayList<>();
+            if (arrayNode.isArray()) {
+                for (final JsonNode node : arrayNode) {
+                    JsonNode nodeId = node.path("id").findPath("videoId");
+                    links.add(BASE_VIDEO_LINK_URL + nodeId.textValue());
+                }
             }
+            return links;
+
+        } catch (HttpClientErrorException e) {
+            return Collections.emptyList();
         }
-        return links;
     }
 }
