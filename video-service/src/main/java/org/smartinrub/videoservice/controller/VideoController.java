@@ -27,6 +27,6 @@ public class VideoController {
         if (links.isEmpty()) {
             throw new YoutubeServiceException("Youtube service not available");
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(links);
     }
 }
