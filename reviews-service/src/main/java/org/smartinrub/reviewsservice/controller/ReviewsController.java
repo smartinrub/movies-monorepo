@@ -25,7 +25,11 @@ public class ReviewsController {
     }
 
     @GetMapping("{movie_id}")
-    public ResponseEntity<List<Review>> getAllReviewsByMovieId(@PathVariable("movie_id") final String movieId) {
-        return ResponseEntity.ok(reviewsRepository.findAllByMovieId(movieId));
+    public ResponseEntity getAllReviewsByMovieId(@PathVariable("movie_id") final String movieId) {
+        List<Review> reviews = reviewsRepository.findAllByMovieId(movieId);
+        if (reviews.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(reviews);
     }
 }
