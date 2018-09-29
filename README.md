@@ -1,5 +1,5 @@
 # movies-monorepo
-## Orchestrator API
+## Orchestrator Service API
 - POST :8081/movies/review
 ```json
 {
@@ -55,3 +55,37 @@ mongo
 use movies
 db.reviews.find({})
 ```
+## Eureka Dashboard
+```
+http://localhost:8761/
+```
+## How to use
+1. Make sure API keys for Youtube and The Movie db are set up.
+2. Run all services starting with eureka-service, otherwise client services will 
+not be able to register in Eureka Service.
+## Sample Usage
+- GET call to retrieve all movies with matching movie title
+```
+GET http://localhost:8081/movies/scary%20movie
+```
+- GET movie with specific movie id
+```
+http://localhost:8081/movies/movie/4256
+```
+- Add review by sending a json with movie id
+```
+POST http://localhost:8081/movies/movie/review
+```
+body:
+```json
+{
+	"movieId":"4256",
+	"comment":"it's okay",
+	"rate":"3"
+}
+```
+- GET movie one more time to see the added review
+```
+http://localhost:8081/movies/movie/4256
+```
+
