@@ -85,11 +85,4 @@ class ReviewsControllerTest {
                 .andExpect(status().isServiceUnavailable());
     }
 
-    @Test
-    void getAllReviewsByMovieId_givenMovieId_whenMongoDbServiceRespondsAndMovieIdNotFound_thenReturnNotFoundStatus() throws Exception {
-        when(service.findAllByMovieId(anyString())).thenReturn(Collections.emptyList());
-        mockMvc.perform(get("/1"))
-                .andExpect(status().isNotFound());
-    }
-
 }

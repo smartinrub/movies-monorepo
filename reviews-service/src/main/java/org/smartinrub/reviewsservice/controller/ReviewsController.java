@@ -24,12 +24,9 @@ public class ReviewsController {
         reviewsRepository.save(review);
     }
 
-    @GetMapping("{movie_id}")
-    public ResponseEntity getAllReviewsByMovieId(@PathVariable("movie_id") final String movieId) {
-        List<Review> reviews = reviewsRepository.findAllByMovieId(movieId);
-        if (reviews.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("{movieId}")
+    public ResponseEntity getAllReviewsByMovieId(@PathVariable("movieId") final long movieId) {
+        List<Review> reviews = reviewsRepository.findAllByMovieId(Long.toString(movieId));
         return ResponseEntity.ok(reviews);
     }
 }

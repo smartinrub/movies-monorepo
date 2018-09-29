@@ -7,6 +7,7 @@ import org.smartinrub.orchestratorservice.client.VideoClient;
 import org.smartinrub.orchestratorservice.model.Movie;
 import org.smartinrub.orchestratorservice.model.Review;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,6 +32,7 @@ public class OrchestratorController {
     }
 
     @PostMapping("/movie/review")
+    @ResponseStatus(HttpStatus.CREATED)
     public void addReview(@Valid @RequestBody Review review) {
         reviewClient.save(review);
     }
@@ -45,7 +47,9 @@ public class OrchestratorController {
     public Movie getMovie(@PathVariable("movieId") final long movieId) {
         Movie movie = movieClient.getById(movieId);
         List<String> links = videoClient.getLinks(movieId, movie.getTitle());
+        List<Review> reviews = reviewClient.getAllByMovieId(movieId);
         movie.setLinks(links);
+        movie.setReviews(reviews);
         return movie;
     }
 }

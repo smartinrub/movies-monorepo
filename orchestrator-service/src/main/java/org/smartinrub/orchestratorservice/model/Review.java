@@ -11,7 +11,7 @@ public class Review {
     private final String movieId;
 
     @NotBlank
-    @Size(min = 5, max = 100)
+    @Size(min = 2, max = 500)
     private final String comment;
 
     @Min(1)

@@ -28,7 +28,7 @@ public class Movie {
     @JsonProperty("production_companies")
     private final List<Producer> producers;
 
-    private final Review review;
+    private List<Review> reviews;
 
     private  List<String> links;
 }

@@ -9,11 +9,12 @@
 }
 ```
 - GET :8081/movies/{movie_name}
+- GET :8081/movies/movie/{movie_id}
 ## Movie Service API
-- GET :8082/movie_name
-- GET :8082/movie/movie_id
+- GET :8082/{movie_name}
+- GET :8082/movie/{movie_id}
 ## Video Service API
-- GET :8083/movie_id?title=movie_name
+- GET :8083/{movie_id}?title={movie_name}
 ## Reviews Service API
 - POST :8084/
 ```json
@@ -23,7 +24,7 @@
 	"rate":"4"
 }
 ```
-- GET /movie_id
+- GET /{movie_id}
 ## Redis
 ### Installation
 ```sh
