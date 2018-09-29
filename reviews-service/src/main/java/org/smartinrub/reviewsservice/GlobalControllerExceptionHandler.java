@@ -13,7 +13,7 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(MongoTimeoutException.class)
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
-    public void handleRedisServiceUnavailableException(Exception e) {
-        log.error("Redis service not responding! Message: {}", e.getMessage());
+    public void handleMongoDbServiceUnavailableException(Exception e) {
+        log.error("MongoDb service not responding! Message: {}", e.getMessage());
     }
 }
