@@ -1,19 +1,17 @@
-package org.smartinrub.movieservice.model;
+package org.smartinrub.orchestratorservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Movie implements Serializable {
+public class Movie {
 
     private final String id;
 
@@ -29,4 +27,8 @@ public class Movie implements Serializable {
 
     @JsonProperty("production_companies")
     private final List<Producer> producers;
+
+    private final Review review;
+
+    private  List<String> links;
 }

@@ -32,7 +32,7 @@ public class YoutubeRepositoryImpl implements YoutubeRepository {
     public List<String> getYoutubeLinksByMovieTitle(String movieTitle) throws IOException {
         String url = BASE_YOUTUBE_API_URL +
                 "key=" + youtubeProperties.getKey() +
-                "&part=id&q=" + movieTitle +
+                "&part=id&q=" + movieTitle + "%movie trailer"+
                 "&maxResults="+ youtubeProperties.getMaxResults() +
                 "&type=video";
         try {

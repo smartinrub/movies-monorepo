@@ -1,11 +1,21 @@
 # movies-monorepo
+## Orchestrator API
+- POST :8081/movies/review
+```json
+{
+	"movieId":"2",
+	"comment":"excellent",
+	"rate":"4"
+}
+```
+- GET :8081/movies/{movie_name}
 ## Movie Service API
-- GET /movies-api/movie_name
-- GET /movies-api/movie/movie_id
+- GET :8082/movie_name
+- GET :8082/movie/movie_id
 ## Video Service API
-- GET /video-api/movie_id?title=movie_name
+- GET :8083/movie_id?title=movie_name
 ## Reviews Service API
-- POST /
+- POST :8084/
 ```json
 {
 	"movieId":"2",
