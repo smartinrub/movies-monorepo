@@ -3,12 +3,15 @@ package org.smartinrub.movieservice;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
 @EnableCaching(proxyTargetClass = true)
-public class Application {
+@EnableDiscoveryClient
+public class MovieServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(MovieServiceApplication.class, args);
     }
 }

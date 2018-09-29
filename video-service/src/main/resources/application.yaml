@@ -1,0 +1,6 @@
+youtube:
+  api:
+    key: AIzaSyDs9AVg3Xr9GJbPlryDnHSVvvDdPcZEA8s
+    max-results: 3
+server:
+  port: 8083
