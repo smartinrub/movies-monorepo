@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
-@FeignClient("reviews-service")
+@FeignClient(value = "reviews-service", fallback = ReviewClientFallback.class)
 public interface ReviewClient {
 
     @PostMapping(value = "/", consumes = "application/json")

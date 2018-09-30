@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient("movie-service")
+@FeignClient(value = "movie-service", fallback = MovieClientFallback.class)
 public interface MovieClient {
 
     @GetMapping(value = "/{title}")

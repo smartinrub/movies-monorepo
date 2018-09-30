@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient("video-service")
+@FeignClient(value = "video-service", fallback = VideoClientFallback.class)
 public interface VideoClient {
 
     @GetMapping("{movieId}")
