@@ -2,4 +2,4 @@ server:
   port: 8082
 themoviedb:
   api:
-    key: 28a5b67e6420000653b42520a245e476
+    key: ${THEMOVIEDB_API_KEY}
