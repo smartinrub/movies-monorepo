@@ -1,4 +1,5 @@
 # movies-monorepo
+![alt text](https://github.com/smartinrub/movies-monorepo/blob/master/system_diagram.png)
 ## Orchestrator Service API
 - POST :8081/movies/review
 ```json
