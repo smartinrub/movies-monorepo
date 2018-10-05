@@ -11,5 +11,5 @@ import java.util.List;
 public interface VideoClient {
 
     @GetMapping("{movieId}")
-    List<String> getLinks(@PathVariable("movieId") final long movieId, @RequestParam("title") final String movieTitle);
+    List<String> getLinks(@PathVariable("movieId") long movieId, @RequestParam("title") String movieTitle);
 }

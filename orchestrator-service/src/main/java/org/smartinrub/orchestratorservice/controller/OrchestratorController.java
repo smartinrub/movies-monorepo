@@ -44,7 +44,7 @@ public class OrchestratorController {
     }
 
     @GetMapping("/movie/{movieId}")
-    public Movie getMovie(@PathVariable("movieId") final long movieId) {
+    public Movie getMovie(@PathVariable("movieId") long movieId) {
         Movie movie = movieClient.getById(movieId);
         List<String> links = videoClient.getLinks(movieId, movie.getTitle());
         List<Review> reviews = reviewClient.getAllByMovieId(movieId);

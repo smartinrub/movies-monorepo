@@ -25,7 +25,7 @@ public class ReviewsController {
     }
 
     @GetMapping("{movieId}")
-    public ResponseEntity getAllReviewsByMovieId(@PathVariable("movieId") final long movieId) {
+    public ResponseEntity getAllReviewsByMovieId(@PathVariable("movieId") long movieId) {
         List<Review> reviews = reviewsRepository.findAllByMovieId(Long.toString(movieId));
         return ResponseEntity.ok(reviews);
     }

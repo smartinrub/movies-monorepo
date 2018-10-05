@@ -15,5 +15,5 @@ public interface ReviewClient {
     void save(Review review);
 
     @GetMapping("{movieId}")
-    List<Review> getAllByMovieId(@PathVariable("movieId") final long movieId);
+    List<Review> getAllByMovieId(@PathVariable("movieId") long movieId);
 }

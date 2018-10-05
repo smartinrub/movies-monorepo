@@ -1,4 +1,4 @@
-package org.smartinrub.reviewsservice;
+package org.smartinrub.reviewsservice.controller;
 
 import com.mongodb.MongoTimeoutException;
 import lombok.extern.slf4j.Slf4j;

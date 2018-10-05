@@ -14,5 +14,5 @@ public interface MovieClient {
     List<Movie> getAll(@PathVariable("title") String title);
 
     @GetMapping(value = "/movie/{movieId}")
-    Movie getById(@PathVariable("movieId") final long movieId);
+    Movie getById(@PathVariable("movieId") long movieId);
 }

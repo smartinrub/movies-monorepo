@@ -21,8 +21,8 @@ public class VideoController {
     }
 
     @GetMapping("/{movie_id}")
-    public ResponseEntity<List<String>> getVideosById(@PathVariable("movie_id") final long movieId,
-                                                      @RequestParam("title") final String movieTitle) throws IOException {
+    public ResponseEntity<List<String>> getVideosById(@PathVariable("movie_id") long movieId,
+                                                      @RequestParam("title") String movieTitle) throws IOException {
         List<String> links = youtubeService.getVideosLink(Long.toString(movieId), movieTitle);
         if (links.isEmpty()) {
             throw new YoutubeServiceException("Youtube service not available");

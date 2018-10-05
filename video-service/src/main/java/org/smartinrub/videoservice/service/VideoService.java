@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface VideoService {
 
-    List<String> getVideosLink(final String movideId, final String videoId) throws IOException;
+    List<String> getVideosLink(String movieId, String videoId) throws IOException;
 }
